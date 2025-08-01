@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kod Gözcüsü - Modül Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .toc {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .toc a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .toc a:hover {
+            background-color: #f0f0f0;
+            color: #667eea;
+        }
+        
+        .module-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .module-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .module-section h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+        
+        .function-doc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .function-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .function-params {
+            margin: 10px 0;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 3px;
+        }
+        
+        .function-returns {
+            margin: 10px 0;
+            padding: 10px;
+            background: #d4edda;
+            border-radius: 3px;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .endpoint-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .endpoint-table th,
+        .endpoint-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .endpoint-table th {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .endpoint-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .endpoint-table tr:hover {
+            background-color: #ddd;
+        }
+        
+        .method-get { color: #28a745; font-weight: bold; }
+        .method-post { color: #007bff; font-weight: bold; }
+        .method-delete { color: #dc3545; font-weight: bold; }
+        
+        .file-structure {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+        }
+        
+        .file-structure pre {
+            margin: 0;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Kod Gözcüsü - Modül Dokümantasyonu</h1>
+            <p>Kapsamlı API ve Modül Referans Kılavuzu</p>
+        </div>
+
+        <div class="toc">
+            <h2>📋 İçindekiler</h2>
+            <ul>
+                <li><a href="#proje-yapisi">1. Proje Yapısı</a></li>
+                <li><a href="#main-module">2. Main Modülü (app/main.py)</a></li>
+                <li><a href="#database-module">3. Database Modülü (app/database.py)</a></li>
+                <li><a href="#gemini-module">4. Gemini Client Modülü (app/gemini_client.py)</a></li>
+                <li><a href="#api-endpoints">5. API Endpoints</a></li>
+                <li><a href="#frontend-modules">6. Frontend Modülleri</a></li>
+                <li><a href="#test-modules">7. Test Modülleri</a></li>
+            </ul>
+        </div>
+
+        <div class="module-section" id="proje-yapisi">
+            <h2>1. 📁 Proje Yapısı</h2>
+            <div class="file-structure">
+                <pre>CodeAnalyzer/
+├── app/
+│   ├── __init__.py
+│   ├── main.py              # FastAPI uygulaması ve API endpoints
+│   ├── gemini_client.py     # Gemini AI API entegrasyonu
+│   └── database.py          # SQLite veritabanı işlemleri
+├── static/
+│   ├── index.html           # Ana sayfa HTML
+│   ├── style.css            # CSS stilleri
+│   └── script.js            # Frontend JavaScript
+├── tests/
+│   └── test_main.py         # Kapsamlı test suite (24 test)
+├── docs/                    # Dokümantasyon klasörü
+├── requirements.txt          # Python bağımlılıkları
+└── README.md               # Proje açıklaması</pre>
+            </div>
+        </div>
+
+        <div class="module-section" id="main-module">
+            <h2>2. 🚀 Main Modülü (app/main.py)</h2>
+            <p>FastAPI uygulamasının ana modülü. Tüm API endpoints'leri ve web sunucusu konfigürasyonunu içerir.</p>
+            
+            <h3>📦 Import Edilen Modüller</h3>
+            <div class="code-block">
+from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
+from dotenv import load_dotenv
+from .gemini_client import analyze_code_with_gemini
+from .database import init_db, save_analysis, get_history, delete_analysis, delete_all_analyses
+            </div>
+
+            <h3>🔧 Ana Fonksiyonlar</h3>
+            
+            <div class="function-doc">
+                <div class="function-name">read_root()</div>
+                <p><strong>Açıklama:</strong> Ana sayfa endpoint'i. index.html dosyasını döner.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> FileResponse - index.html dosyası
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">analyze_code_endpoint(payload: CodeInput)</div>
+                <p><strong>Açıklama:</strong> Kod analizi endpoint'i. Gemini AI ile kod analizi yapar.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong><br>
+                    - payload (CodeInput): Analiz edilecek kod içeren JSON objesi
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> dict - Analiz sonucu
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">get_analysis_history()</div>
+                <p><strong>Açıklama:</strong> Analiz geçmişini veritabanından alır.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> list - Analiz geçmişi listesi
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">delete_single_analysis(analysis_id: int)</div>
+                <p><strong>Açıklama:</strong> Belirli bir analizi veritabanından siler.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong><br>
+                    - analysis_id (int): Silinecek analizin ID'si
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> dict - İşlem sonucu mesajı
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">delete_all_analysis_history()</div>
+                <p><strong>Açıklama:</strong> Tüm analizleri veritabanından siler.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> dict - Silinen kayıt sayısı
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">health_check()</div>
+                <p><strong>Açıklama:</strong> Uygulama sağlık kontrolü endpoint'i.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> dict - Sağlık durumu bilgisi
+                </div>
+            </div>
+        </div>
+
+        <div class="module-section" id="database-module">
+            <h2>3. 🗄️ Database Modülü (app/database.py)</h2>
+            <p>SQLite veritabanı işlemlerini yöneten modül. Analiz sonuçlarını saklama ve alma işlemlerini gerçekleştirir.</p>
+
+            <h3>🔧 Ana Fonksiyonlar</h3>
+            
+            <div class="function-doc">
+                <div class="function-name">init_db()</div>
+                <p><strong>Açıklama:</strong> Veritabanını başlatır ve gerekli tabloları oluşturur.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> None
+                </div>
+                <div class="code-block">
+CREATE TABLE IF NOT EXISTS analyses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp TEXT NOT NULL,
+    original_code TEXT NOT NULL,
+    analysis_result TEXT NOT NULL
+)
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">save_analysis(code: str, result: str)</div>
+                <p><strong>Açıklama:</strong> Kod analizi sonucunu veritabanına kaydeder.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong><br>
+                    - code (str): Analiz edilen kod<br>
+                    - result (str): Analiz sonucu
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> None
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">get_history()</div>
+                <p><strong>Açıklama:</strong> Son 20 analizi veritabanından alır.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> list - Analiz geçmişi tuple listesi
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">delete_analysis(analysis_id: int)</div>
+                <p><strong>Açıklama:</strong> Belirli bir analizi veritabanından siler.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong><br>
+                    - analysis_id (int): Silinecek analizin ID'si
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> bool - Silme işlemi başarılı mı
+                </div>
+            </div>
+
+            <div class="function-doc">
+                <div class="function-name">delete_all_analyses()</div>
+                <p><strong>Açıklama:</strong> Tüm analizleri veritabanından siler.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong> Yok
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> int - Silinen kayıt sayısı
+                </div>
+            </div>
+        </div>
+
+        <div class="module-section" id="gemini-module">
+            <h2>4. 🤖 Gemini Client Modülü (app/gemini_client.py)</h2>
+            <p>Google Gemini AI API entegrasyonunu sağlayan modül. Kod analizi için AI destekli akıllı inceleme yapar.</p>
+
+            <h3>🔧 Ana Fonksiyonlar</h3>
+            
+            <div class="function-doc">
+                <div class="function-name">analyze_code_with_gemini(code: str) -> str</div>
+                <p><strong>Açıklama:</strong> Verilen kodu Gemini AI API'ye gönderir ve detaylı analiz sonucunu döner.</p>
+                <div class="function-params">
+                    <strong>Parametreler:</strong><br>
+                    - code (str): Analiz edilecek kod
+                </div>
+                <div class="function-returns">
+                    <strong>Dönüş:</strong> str - AI tarafından üretilen analiz raporu
+                </div>
+                <p><strong>Analiz Kategorileri:</strong></p>
+                <ul>
+                    <li>🔍 Hatalar ve Bug'lar</li>
+                    <li>🛡️ Güvenlik Açıkları</li>
+                    <li>🔧 Refactoring Önerileri</li>
+                    <li>📊 Genel Değerlendirme</li>
+                </ul>
+            </div>
+
+            <h3>🔑 Gereksinimler</h3>
+            <div class="code-block">
+# .env dosyasında GEMINI_API_KEY tanımlanmalı
+GEMINI_API_KEY=your_api_key_here
+            </div>
+        </div>
+
+        <div class="module-section" id="api-endpoints">
+            <h2>5. 🌐 API Endpoints</h2>
+            <p>FastAPI uygulamasının sunduğu tüm HTTP endpoint'leri.</p>
+
+            <table class="endpoint-table">
+                <thead>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Açıklama</th>
+                        <th>Request Body</th>
+                        <th>Response</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/</td>
+                        <td class="method-get">GET</td>
+                        <td>Ana sayfa - HTML arayüzü</td>
+                        <td>-</td>
+                        <td>HTML dosyası</td>
+                    </tr>
+                    <tr>
+                        <td>/api/analyze</td>
+                        <td class="method-post">POST</td>
+                        <td>Kod analizi yapar</td>
+                        <td>{"code": "string"}</td>
+                        <td>{"analysis": "string"}</td>
+                    </tr>
+                    <tr>
+                        <td>/api/history</td>
+                        <td class="method-get">GET</td>
+                        <td>Analiz geçmişini getirir</td>
+                        <td>-</td>
+                        <td>[{"id": int, "timestamp": "string", "original_code": "string", "analysis_result": "string"}]</td>
+                    </tr>
+                    <tr>
+                        <td>/api/history/{id}</td>
+                        <td class="method-delete">DELETE</td>
+                        <td>Belirli analizi siler</td>
+                        <td>-</td>
+                        <td>{"message": "string"}</td>
+                    </tr>
+                    <tr>
+                        <td>/api/history</td>
+                        <td class="method-delete">DELETE</td>
+                        <td>Tüm analizleri siler</td>
+                        <td>-</td>
+                        <td>{"message": "string"}</td>
+                    </tr>
+                    <tr>
+                        <td>/health</td>
+                        <td class="method-get">GET</td>
+                        <td>Sağlık kontrolü</td>
+                        <td>-</td>
+                        <td>{"status": "string", "service": "string"}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="module-section" id="frontend-modules">
+            <h2>6. 🎨 Frontend Modülleri</h2>
+            
+            <h3>📄 index.html</h3>
+            <p>Ana sayfa HTML dosyası. Modern ve responsive tasarım ile kullanıcı arayüzü sağlar.</p>
+            <ul>
+                <li><strong>Özellikler:</strong> Metin girişi ve dosya yükleme seçenekleri</li>
+                <li><strong>Güvenlik:</strong> DOMPurify kütüphanesi ile XSS koruması</li>
+                <li><strong>UI:</strong> Font Awesome ikonları ve modern CSS</li>
+            </ul>
+
+            <h3>🎨 style.css</h3>
+            <p>CSS stilleri. Responsive tasarım ve modern görünüm sağlar.</p>
+            <ul>
+                <li><strong>Tema:</strong> Gradient renkler ve modern tasarım</li>
+                <li><strong>Responsive:</strong> Mobil uyumlu tasarım</li>
+                <li><strong>Animasyonlar:</strong> Smooth geçişler ve hover efektleri</li>
+            </ul>
+
+            <h3>⚡ script.js</h3>
+            <p>Frontend JavaScript kodu. API ile iletişim ve kullanıcı etkileşimlerini yönetir.</p>
+            <ul>
+                <li><strong>API İletişimi:</strong> Fetch API ile backend iletişimi</li>
+                <li><strong>Dosya İşleme:</strong> Drag & drop dosya yükleme</li>
+                <li><strong>Geçmiş Yönetimi:</strong> Analiz geçmişini görüntüleme ve silme</li>
+                <li><strong>Hata Yönetimi:</strong> Kullanıcı dostu hata mesajları</li>
+            </ul>
+        </div>
+
+        <div class="module-section" id="test-modules">
+            <h2>7. 🧪 Test Modülleri</h2>
+            
+            <h3>📋 test_main.py</h3>
+            <p>Kapsamlı test suite. 24 test ile %100 test coverage sağlar.</p>
+
+            <h4>🔗 Integration Testler (17 test)</h4>
+            <ul>
+                <li><strong>Kod Analizi Testleri (4 test):</strong> Boş kod, geçerli kod, güvenlik açığı tespiti</li>
+                <li><strong>Veritabanı Testleri (2 test):</strong> Kaydetme, alma, başlatma işlemleri</li>
+                <li><strong>API Endpoint Testleri (4 test):</strong> Tüm endpoint'lerin test edilmesi</li>
+                <li><strong>Gemini Entegrasyon Testleri (2 test):</strong> API entegrasyonu ve hata yönetimi</li>
+                <li><strong>Kod Kalitesi Testleri (2 test):</strong> Refactoring önerileri ve hata tespiti</li>
+                <li><strong>Performans ve Güvenlik Testleri (2 test):</strong> Büyük kod işleme ve güvenlik tespiti</li>
+            </ul>
+
+            <h4>✅ Unit Testler (7 test)</h4>
+            <ul>
+                <li><strong>Gemini Client Unit Testleri (3 test):</strong> API anahtarı kontrolü, fonksiyon testi, exception handling</li>
+                <li><strong>Database Unit Testleri (3 test):</strong> save_analysis, get_history, init_db fonksiyonları</li>
+                <li><strong>Main Functions Unit Testleri (2 test):</strong> Health check ve history fonksiyonları</li>
+            </ul>
+
+            <h4>🎭 Mock Kullanımı</h4>
+            <p>Testlerde gerçek API çağrıları yerine mock'lar kullanılır:</p>
+            <ul>
+                <li>🚀 <strong>Hızlı Testler:</strong> API çağrıları olmadan anında sonuç</li>
+                <li>💰 <strong>Maliyet Tasarrufu:</strong> API kullanım ücreti yok</li>
+                <li>🔒 <strong>Güvenilirlik:</strong> İnternet bağlantısına bağımlı değil</li>
+                <li>🧪 <strong>Tutarlılık:</strong> Her test aynı sonucu verir</li>
+            </ul>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kod Gözcüsü - Kullanıcı ve Admin Kılavuzu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .toc {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .toc a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .toc a:hover {
+            background-color: #f0f0f0;
+            color: #667eea;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .feature-box {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .screenshot {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            margin: 15px 0;
+            color: #666;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .table th,
+        .table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+        }
+        
+        .user-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .user-type.user {
+            background: #28a745;
+            color: white;
+        }
+        
+        .user-type.admin {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📖 Kod Gözcüsü - Kullanıcı ve Admin Kılavuzu</h1>
+            <p>Detaylı Kullanım Rehberi ve Yönetim Talimatları</p>
+        </div>
+
+        <div class="toc">
+            <h2>📋 İçindekiler</h2>
+            <ul>
+                <li><a href="#genel-bilgiler">1. Genel Bilgiler</a></li>
+                <li><a href="#kurulum">2. Kurulum ve Yapılandırma</a></li>
+                <li><a href="#kullanici-kilavuzu">3. Kullanıcı Kılavuzu</a></li>
+                <li><a href="#admin-kilavuzu">4. Admin Kılavuzu</a></li>
+                <li><a href="#sorun-giderme">5. Sorun Giderme</a></li>
+                <li><a href="#sss">6. Sık Sorulan Sorular</a></li>
+            </ul>
+        </div>
+
+        <div class="section" id="genel-bilgiler">
+            <h2>1. 📋 Genel Bilgiler</h2>
+            
+            <h3>🎯 Sistem Hakkında</h3>
+            <p>Kod Gözcüsü, Python kodlarını analiz eden, hata ve güvenlik açıklarını tespit eden, refactoring önerileri sunan modern bir web uygulamasıdır. Google Gemini AI API'sini kullanarak akıllı kod analizi yapar.</p>
+            
+            <div class="feature-box">
+                <h4>🚀 Temel Özellikler</h4>
+                <ul>
+                    <li><strong>🔍 Akıllı Kod Analizi:</strong> Gemini AI ile gelişmiş kod inceleme</li>
+                    <li><strong>🛡️ Güvenlik Tespiti:</strong> SQL injection, XSS, güvensiz kütüphane kullanımı vb.</li>
+                    <li><strong>🐛 Hata Tespiti:</strong> Potansiyel bug'ları ve çalışma zamanı hatalarını tespit eder</li>
+                    <li><strong>🔧 Refactoring Önerileri:</strong> Kod kalitesini artıracak somut öneriler</li>
+                    <li><strong>📚 Geçmiş Kayıtları:</strong> Önceki analizleri görüntüleme ve yeniden kullanma</li>
+                    <li><strong>🎨 Modern UI:</strong> Kullanıcı dostu, responsive tasarım</li>
+                </ul>
+            </div>
+            
+            <h3>💻 Sistem Gereksinimleri</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Bileşen</th>
+                        <th>Minimum Gereksinim</th>
+                        <th>Önerilen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Python</td>
+                        <td>3.8+</td>
+                        <td>3.9+</td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td>512 MB</td>
+                        <td>1 GB+</td>
+                    </tr>
+                    <tr>
+                        <td>Disk Alanı</td>
+                        <td>100 MB</td>
+                        <td>500 MB+</td>
+                    </tr>
+                    <tr>
+                        <td>İnternet</td>
+                        <td>Gemini API için gerekli</td>
+                        <td>Hızlı bağlantı</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section" id="kurulum">
+            <h2>2. ⚙️ Kurulum ve Yapılandırma</h2>
+            
+            <h3>📥 Kurulum Adımları</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Projeyi İndirin</h4>
+                    <div class="code-block">
+git clone &lt;repository-url&gt;
+cd CodeAnalyzer
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4>Sanal Ortam Oluşturun</h4>
+                    <div class="code-block">
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Linux/Mac
+python -m venv venv
+source venv/bin/activate
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>
+                    <h4>Bağımlılıkları Yükleyin</h4>
+                    <div class="code-block">
+pip install -r requirements.txt
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div>
+                    <h4>Gemini API Anahtarını Ayarlayın (Opsiyonel)</h4>
+                    <div class="code-block">
+# .env dosyası oluşturun
+echo GEMINI_API_KEY=your_api_key_here > .env
+                    </div>
+                    <div class="warning-box">
+                        <strong>⚠️ Not:</strong> API anahtarı olmadan da testler çalışır çünkü mock kullanılır.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <div>
+                    <h4>Uygulamayı Çalıştırın</h4>
+                    <div class="code-block">
+uvicorn app.main:app --reload
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Başarılı!</strong> Uygulama http://localhost:8000 adresinde çalışacaktır.
+                    </div>
+                </div>
+            </div>
+            
+            <h3>🔧 Yapılandırma Seçenekleri</h3>
+            
+            <div class="feature-box">
+                <h4>🌐 Port Değiştirme</h4>
+                <div class="code-block">
+uvicorn app.main:app --reload --port 8080
+                </div>
+            </div>
+            
+            <div class="feature-box">
+                <h4>🏠 Host Değiştirme</h4>
+                <div class="code-block">
+uvicorn app.main:app --reload --host 0.0.0.0
+                </div>
+            </div>
+            
+            <div class="feature-box">
+                <h4>🗄️ Veritabanı Yolu Değiştirme</h4>
+                <div class="code-block">
+# Environment variable olarak
+export DATABASE_PATH=/path/to/custom/database.sqlite3
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="kullanici-kilavuzu">
+            <h2>3. 👤 Kullanıcı Kılavuzu <span class="user-type user">KULLANICI</span></h2>
+            
+            <h3>🌐 Web Arayüzü Kullanımı</h3>
+            
+            <div class="screenshot-placeholder">
+                <h4>📸 Ana Sayfa Ekran Görüntüsü</h4>
+                <p>Buraya ana sayfa ekran görüntüsü eklenecek</p>
+                <small>ekran1.png dosyası buraya yerleştirilecek</small>
+            </div>
+            
+            <h4>📝 Kod Analizi Yapma</h4>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Metin Girişi ile Analiz</h4>
+                    <ul>
+                        <li>Tarayıcınızda http://localhost:8000 adresine gidin</li>
+                        <li>"Metin Girişi" sekmesini seçin</li>
+                        <li>Analiz etmek istediğiniz kod parçasını textarea'ya yapıştırın</li>
+                        <li>"Kodu Analiz Et" butonuna tıklayın</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4>Dosya Yükleme ile Analiz</h4>
+                    <ul>
+                        <li>"Dosya Yükle" sekmesini seçin</li>
+                        <li>Desteklenen dosya türleri: .py, .js, .java, .cpp, .c, .cs, .php, .rb, .go, .rs</li>
+                        <li>Dosyayı sürükleyip bırakın veya "Dosya Seç" butonuna tıklayın</li>
+                        <li>"Kodu Analiz Et" butonuna tıklayın</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h4>📊 Analiz Sonuçlarını İnceleme</h4>
+            
+            <div class="feature-box">
+                <h4>🔍 Analiz Kategorileri</h4>
+                <ul>
+                    <li><strong>Hatalar ve Bug'lar:</strong> Kodun çalışmasını engelleyecek potansiyel hatalar</li>
+                    <li><strong>Güvenlik Açıkları:</strong> SQL injection, XSS, güvensiz kütüphane kullanımı vb.</li>
+                    <li><strong>Refactoring Önerileri:</strong> Kod kalitesini artıracak somut öneriler</li>
+                    <li><strong>Genel Değerlendirme:</strong> Kod hakkında kısa bir genel yorum</li>
+                </ul>
+            </div>
+            
+            <h4>📚 Geçmiş Analizleri Görüntüleme</h4>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Geçmiş Listesi</h4>
+                    <ul>
+                        <li>Sayfanın alt kısmında "Geçmiş Analizler" bölümünü bulun</li>
+                        <li>Son 20 analiz otomatik olarak listelenir</li>
+                        <li>"Yenile" butonuna tıklayarak listeyi güncelleyin</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4>Analiz Detayları</h4>
+                    <ul>
+                        <li>Her analiz için tarih/saat bilgisi görüntülenir</li>
+                        <li>Orijinal kod ve analiz sonucu ayrı ayrı gösterilir</li>
+                        <li>Analiz sonucunu kopyalamak için "Kopyala" butonunu kullanın</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h4>🗑️ Geçmiş Yönetimi</h4>
+            
+            <div class="warning-box">
+                <h4>⚠️ Silme İşlemleri</h4>
+                <ul>
+                    <li>Tek bir analizi silmek için analiz kartındaki çöp kutusu ikonuna tıklayın</li>
+                    <li>Tüm analizleri silmek için "Tümünü Sil" butonunu kullanın</li>
+                    <li><strong>Dikkat:</strong> Silme işlemleri geri alınamaz!</li>
+                </ul>
+            </div>
+            
+            <h3>🔧 Kullanışlı İpuçları</h3>
+            
+            <div class="feature-box">
+                <h4>💡 En İyi Uygulamalar</h4>
+                <ul>
+                    <li><strong>Kod Uzunluğu:</strong> Çok uzun kodlar için parça parça analiz yapın</li>
+                    <li><strong>Dil Seçimi:</strong> Desteklenen programlama dillerini kullanın</li>
+                    <li><strong>Hata Mesajları:</strong> Hata durumunda sayfayı yenileyin</li>
+                    <li><strong>Geçmiş:</strong> Önemli analizleri not alın, silme işlemlerinde dikkatli olun</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="admin-kilavuzu">
+            <h2>4. 🔧 Admin Kılavuzu <span class="user-type admin">ADMIN</span></h2>
+            
+            <h3>🚀 Sistem Yönetimi</h3>
+            
+            <h4>📊 Sistem Durumu Kontrolü</h4>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Sağlık Kontrolü</h4>
+                    <div class="code-block">
+curl -X GET "http://localhost:8000/health"
+                    </div>
+                    <p>Beklenen yanıt:</p>
+                    <div class="code-block">
+{"status": "healthy", "service": "Kod Gözcüsü"}
+                    </div>
+                </div>
+            </div>
+            
+            <h4>🗄️ Veritabanı Yönetimi</h4>
+            
+            <div class="feature-box">
+                <h4>📁 Veritabanı Dosyası</h4>
+                <ul>
+                    <li><strong>Varsayılan Konum:</strong> db.sqlite3 (proje kök dizininde)</li>
+                    <li><strong>Özel Konum:</strong> DATABASE_PATH environment variable ile değiştirilebilir</li>
+                    <li><strong>Yedekleme:</strong> Düzenli olarak veritabanı dosyasını yedekleyin</li>
+                </ul>
+            </div>
+            
+            <div class="code-block">
+# Veritabanı yedekleme
+cp db.sqlite3 backup_$(date +%Y%m%d_%H%M%S).sqlite3
+
+# Veritabanı boyutu kontrolü
+ls -lh db.sqlite3
+            </div>
+            
+            <h4>🔑 API Anahtarı Yönetimi</h4>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Gemini API Anahtarı Alma</h4>
+                    <ul>
+                        <li>Google AI Studio'ya gidin: https://makersuite.google.com/app/apikey</li>
+                        <li>Google hesabınızla giriş yapın</li>
+                        <li>"Create API Key" butonuna tıklayın</li>
+                        <li>Oluşturulan anahtarı kopyalayın</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4>API Anahtarını Yapılandırma</h4>
+                    <div class="code-block">
+# .env dosyası oluşturun
+echo "GEMINI_API_KEY=your_actual_api_key_here" > .env
+
+# Veya environment variable olarak
+export GEMINI_API_KEY=your_actual_api_key_here
+                    </div>
+                </div>
+            </div>
+            
+            <h4>📈 Performans İzleme</h4>
+            
+            <div class="feature-box">
+                <h4>🔍 İzleme Metrikleri</h4>
+                <ul>
+                    <li><strong>API Yanıt Süreleri:</strong> Gemini API çağrılarının süresi</li>
+                    <li><strong>Veritabanı Boyutu:</strong> Analiz geçmişinin kapladığı alan</li>
+                    <li><strong>Hata Oranları:</strong> Başarısız analiz sayısı</li>
+                    <li><strong>Kullanım İstatistikleri:</strong> Günlük/aylık analiz sayısı</li>
+                </ul>
+            </div>
+            
+            <h4>🛠️ Sorun Giderme</h4>
+            
+            <div class="warning-box">
+                <h4>🚨 Yaygın Sorunlar ve Çözümleri</h4>
+                
+                <h5>API Anahtarı Hatası</h5>
+                <div class="code-block">
+# Hata: "API anahtarı bulunamadı"
+# Çözüm: .env dosyasını kontrol edin
+cat .env
+                </div>
+                
+                <h5>Veritabanı Hatası</h5>
+                <div class="code-block">
+# Hata: "database is locked"
+# Çözüm: Uygulamayı yeniden başlatın
+pkill -f uvicorn
+uvicorn app.main:app --reload
+                </div>
+                
+                <h5>Port Çakışması</h5>
+                <div class="code-block">
+# Hata: "Address already in use"
+# Çözüm: Farklı port kullanın
+uvicorn app.main:app --reload --port 8080
+                </div>
+            </div>
+            
+            <h4>🔒 Güvenlik Yönetimi</h4>
+            
+            <div class="feature-box">
+                <h4>🛡️ Güvenlik Önlemleri</h4>
+                <ul>
+                    <li><strong>API Anahtarı:</strong> .env dosyasını .gitignore'a ekleyin</li>
+                    <li><strong>Firewall:</strong> Gerekli portları açın (8000 varsayılan)</li>
+                    <li><strong>HTTPS:</strong> Prodüksiyon ortamında SSL sertifikası kullanın</li>
+                    <li><strong>Rate Limiting:</strong> API çağrılarını sınırlayın</li>
+                </ul>
+            </div>
+            
+            <h4>📊 Log Yönetimi</h4>
+            
+            <div class="code-block">
+# Uvicorn loglarını dosyaya yönlendirme
+uvicorn app.main:app --reload --log-level info > app.log 2>&1
+
+# Log dosyasını izleme
+tail -f app.log
+            </div>
+        </div>
+
+        <div class="section" id="sorun-giderme">
+            <h2>5. 🔧 Sorun Giderme</h2>
+            
+            <h3>🚨 Yaygın Hatalar ve Çözümleri</h3>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hata</th>
+                        <th>Olası Neden</th>
+                        <th>Çözüm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>"API anahtarı bulunamadı"</td>
+                        <td>.env dosyası eksik veya yanlış</td>
+                        <td>.env dosyasını oluşturun ve API anahtarını ekleyin</td>
+                    </tr>
+                    <tr>
+                        <td>"Address already in use"</td>
+                        <td>8000 portu kullanımda</td>
+                        <td>Farklı port belirtin: --port 8080</td>
+                    </tr>
+                    <tr>
+                        <td>"database is locked"</td>
+                        <td>Veritabanı dosyası kilitli</td>
+                        <td>Uygulamayı yeniden başlatın</td>
+                    </tr>
+                    <tr>
+                        <td>"ModuleNotFoundError"</td>
+                        <td>Bağımlılıklar eksik</td>
+                        <td>pip install -r requirements.txt</td>
+                    </tr>
+                    <tr>
+                        <td>"Permission denied"</td>
+                        <td>Dosya yazma izni yok</td>
+                        <td>Dizin izinlerini kontrol edin</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>🔍 Debug Modu</h3>
+            
+            <div class="code-block">
+# Debug modunda çalıştırma
+uvicorn app.main:app --reload --log-level debug
+
+# Detaylı hata mesajları için
+export PYTHONPATH=.
+python -m uvicorn app.main:app --reload --log-level debug
+            </div>
+            
+            <h3>📞 Destek</h3>
+            
+            <div class="feature-box">
+                <h4>🆘 Yardım Alma</h4>
+                <ul>
+                    <li><strong>Log Dosyaları:</strong> Hata detayları için logları kontrol edin</li>
+                    <li><strong>Test Çalıştırma:</strong> pytest tests/ komutu ile testleri çalıştırın</li>
+                    <li><strong>Dokümantasyon:</strong> Bu kılavuzu tekrar gözden geçirin</li>
+                    <li><strong>GitHub Issues:</strong> Proje sayfasında issue açın</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="sss">
+            <h2>6. ❓ Sık Sorulan Sorular</h2>
+            
+            <h3>🤔 Genel Sorular</h3>
+            
+            <div class="feature-box">
+                <h4>Q: Hangi programlama dilleri destekleniyor?</h4>
+                <p><strong>A:</strong> Python, JavaScript, Java, C++, C, C#, PHP, Ruby, Go, Rust dilleri desteklenmektedir.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: API anahtarı olmadan kullanabilir miyim?</h4>
+                <p><strong>A:</strong> Testler için evet, gerçek analiz için hayır. API anahtarı olmadan mock kullanılır.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: Maksimum kod uzunluğu nedir?</h4>
+                <p><strong>A:</strong> Gemini API limitleri geçerlidir. Çok uzun kodlar için parça parça analiz önerilir.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: Analiz geçmişi ne kadar saklanır?</h4>
+                <p><strong>A:</strong> Son 20 analiz görüntülenir. Tüm analizler veritabanında saklanır.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: Veritabanı yedekleme nasıl yapılır?</h4>
+                <p><strong>A:</strong> db.sqlite3 dosyasını kopyalayarak yedekleyebilirsiniz.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: Farklı port kullanabilir miyim?</h4>
+                <p><strong>A:</strong> Evet, --port parametresi ile istediğiniz portu kullanabilirsiniz.</p>
+            </div>
+            
+            <h3>🔧 Teknik Sorular</h3>
+            
+            <div class="feature-box">
+                <h4>Q: Testler nasıl çalıştırılır?</h4>
+                <p><strong>A:</strong> pytest tests/ komutu ile tüm testleri çalıştırabilirsiniz.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: Mock nedir ve neden kullanılır?</h4>
+                <p><strong>A:</strong> Mock, gerçek API çağrıları yerine sahte yanıtlar döndüren test tekniğidir. Hızlı ve maliyetsiz testler için kullanılır.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h4>Q: Hata ayıklama nasıl yapılır?</h4>
+                <p><strong>A:</strong> --log-level debug parametresi ile detaylı loglar alabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 
