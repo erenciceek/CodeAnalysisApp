@@ -81,11 +81,19 @@ Uygulama http://localhost:8000 adresinde çalışacaktır.
 
 ### Web Arayüzü
 
-1. Tarayıcınızda http://localhost:8000 adresine gidin
+Uygulamaya erişmek için aşağıdaki URL'lerden birini kullanabilirsiniz:
+
+- **Ana Sayfa:** http://localhost:8000
+- **Doğrudan HTML:** http://localhost:8000/static/index.html
+
+**Kullanım Adımları:**
+1. Tarayıcınızda yukarıdaki URL'lerden birine gidin
 2. Analiz etmek istediğiniz kod parçasını textarea'ya yapıştırın
 3. "Kodu Analiz Et" butonuna tıklayın
 4. Analiz sonucunu inceleyin
 5. Geçmiş analizlerinizi görüntüleyin
+
+**Not:** Her iki URL de aynı arayüzü gösterir. Ana sayfa (`/`) endpoint'i otomatik olarak `static/index.html` dosyasını serve eder.
 
 ### API Kullanımı
 
